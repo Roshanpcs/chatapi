@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/chatApp', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/chatApp',)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.log('MongoDB connection error: ', error));
 
@@ -48,8 +48,9 @@ io.on('connection', (socket) => {
   // Handle room join event
   socket.on('join-room', (data) => {
     const { roomName, userName , } = data;
+    const value='joined';
     socket.join(roomName);
-    io.to(roomName).emit('message', `${userName} has joined the room.`);
+    io.to(roomName).emit('joineduser', {userName,roomName} );
     console.log(`${userName} joined room: ${roomName}`);
   });
 
